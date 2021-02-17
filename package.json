@@ -4,8 +4,8 @@
     "chromium-args": "--force-color-profile=srgb",
     "window": {
         "title": "SNS風プラグインサンプルMZ",
-        "width": 816,
-        "height": 624,
+        "width": 624,
+        "height": 816,
         "position": "center",
         "icon": "icon/icon.png"
     }
