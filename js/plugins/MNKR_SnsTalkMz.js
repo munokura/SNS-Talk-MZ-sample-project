@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_SnsTalkMz Ver.0.0.1
+ * MNKR_SnsTalkMz Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -322,10 +322,12 @@ var _Oggy_PluginParameters = JSON.parse(JSON.stringify(PluginManager.parameters(
     //     if (command.toLowerCase() === 'startatsutalkevent') {
     //         var commonEventId = Number(args[0]);
     //         SceneManager.currentScene()._atsuTalkService.startAtsuTalkEvent(commonEventId);
-    //     } else if (command.toLowerCase() === 'clearatsutalkhistory') {
+    //     } else if (command.toLowerCase() === 'clearatsutalklog') {
     //         var commonEventId = Number(args[0]);
     //         $gameSystem._record.clearAllRecord();
-    //         // SceneManager.currentScene()._atsuTalkService.clear();
+    //         if (SceneManager.currentScene()._atsuTalkService != undefined) {
+    //             SceneManager.currentScene()._atsuTalkService.refresh();
+    //         }
     //     } else if (command.toLowerCase() === 'changetalkroom') {
     //         var roomId = Number(args[0]);
     //         $gameSystem._record.changeRoomId(roomId);
@@ -344,6 +346,9 @@ PluginManager.registerCommand(pluginName, "startatsutalkevent", function (args) 
 
 PluginManager.registerCommand(pluginName, "ClearAtsuTalkLog", function (args) {
     $gameSystem._record.clearAllRecord();
+    if (SceneManager.currentScene()._atsuTalkService != undefined) {
+        SceneManager.currentScene()._atsuTalkService.refresh();
+    }
 });
 
 PluginManager.registerCommand(pluginName, "ChangeTalkRoom", function (args) {
@@ -3525,7 +3530,9 @@ Service_Choice.prototype.update = function () {
             case 1:
                 if (!this._isBusy()) {
                     for (var i = 0; i < this._nodes.length; ++i) {
-                        this._nodes[i].setIsTouchEnabled(true);
+                        if (this._nodes[i]._isEnabled) {
+                            this._nodes[i].setIsTouchEnabled(true);
+                        }
                     }
                 }
                 break;
